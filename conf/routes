@@ -1,0 +1,33 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET           /                            controllers.LoginController.admin
+
+GET           /home/admin                  controllers.LoginController.login
+
+GET           /home/sign                   controllers.LoginController.sign
+
+GET           /home/signSuccess            controllers.LoginController.signsuccess(account:String,password:String)
+
+GET           /home/toSuccess              controllers.LoginController.toSuccess
+GET           /home/checkAccount           controllers.LoginController.checkAccount
+DELETE        /home/deleteUser             controllers.AdminController.deleteUser(id:Int)
+PUT           /home/updatePassword         controllers.AdminController.updatePassword
+GET           /unix/getDisk                controllers.AdminController.getDisk
+
+DELETE           /home/deleteTmp               controllers.AdminController.deleteTmp
+
+GET           /home/getAllUser             controllers.AdminController.getAllUser
+
+GET           /project/platformHome        controllers.AdminController.platformHome
+
+GET           /back/logout                 controllers.LoginController.logout
+GET           /home/toIndex                controllers.LoginController.toIndex(account:String)
+
+
+GET           /back/adminPage              controllers.AdminController.adminHome
+
+# Map static resources from the /public folder to the /assets URL path
+GET           /assets/*file                controllers.Assets.at(path="/public", file)

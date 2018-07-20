@@ -1,0 +1,419 @@
+@(host:String)(implicit session: Session)
+@admin.main("管理")(host) {
+
+    <style>
+            .update {
+                border-radius: 15px 15px 15px 15px;
+                background-color: transparent;
+                color: gray;
+                border: 0px;
+            }
+
+            .update:hover {
+                color: gray;
+                background-color: lightgray;
+            }
+
+            .fastq {
+                background-color: transparent;
+                color: gray;
+                border: 0px;
+            }
+
+            .fastq:hover {
+                color: black;
+                text-decoration: underline;
+            }
+
+            .delete {
+                border-radius: 15px 15px 15px 15px;
+                background-color: transparent;
+                color: gray;
+                border: 0px;
+            }
+
+            .delete:hover {
+                color: white;
+                background-color: red;
+            }
+
+            .state {
+                display: none;
+            }
+
+            .layui-layer-title {
+                background-color: #428BCA;
+                height: 55px;
+            }
+    </style>
+
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="portlet blue-madison box">
+
+                <div class="portlet-title">
+                    <div class="caption">
+                        用户管理
+                    </div>
+                </div>
+
+
+                <div class="portlet-body" id="t">
+
+                    <div class="table-responsive" >
+
+                        <table class="display table table-bordered table-hover table-striped" id="table" data-pagination="true" data-search="true"
+                        data-search-align="left" data-page-list="[10, 25, 50, 100]" data-multiple-search="true">
+
+                            <thead>
+                                <tr>
+                                    <th data-field="user" data-sortable="true" id="user">用户名</th>
+                                    <th data-field="power" data-sortable="true" id="power">权限</th>
+                                    <th data-field="operation" data-sortable="false" id="operation">操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="update" class="modal fade modal-margin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width: 600px;">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">
+                        <span id="lblAddTitle" style="font-weight: bold">修改密码：</span>
+                    </h4>
+                </div>
+                <form id="updateForm" data-toggle="validator">
+                    <div class="modal-body">
+                        <div class="row-fluid">
+
+                            <div class="row">
+
+                                <div class="col-sm-8" style="display: none;" >
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            ID：
+                                        </label>
+                                        <input class="form-control indent" id="uid" name="uid" >
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-8">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            新密码: </label>
+                                        <input class="form-control indent" name="psd" id="psd" type="password" >
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-8">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            确认新密码: </label>
+                                        <input class="form-control indent" name="password" id="password" type="password" >
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-info">
+                        <button type="submit" class="btn blue" onclick="sureUpdate()">确定</button>
+                        <button type="button" class="btn green" data-dismiss="modal">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="deleteShow" class="modal fade modal-margin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 200px;">
+        <div class="modal-dialog" style="width: 400px;">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h4 class="modal-title" align="center" id="title1">
+                        <span id="deleteTitle" style="font-weight: bold">请确认是否删除用户
+                            <b id="dtask">
+
+                            </b>
+                        </span>
+                    </h4>
+                    <h4 class="modal-title" align="center" id="title2" style="display: none">
+                        <span id="deleteTitle" style="font-weight: bold">删除中...</span>
+                    </h4>
+                    <h4 class="modal-title" align="center" id="title3" style="display: none">
+                        <span id="deleteTitle" style="font-weight: bold">删除成功</span>
+                    </h4>
+                </div>
+                <div class="row-fluid" align="center" >
+                    <div id="warn1">
+                        <img src="/assets/images/warning.png">
+                    </div>
+                    <div id="warn2" style="display: none;">
+                        <img src="/assets/images/timg2.gif" style="height: 109px;">
+                    </div>
+                    <div id="warn3" style="display: none;">
+                        <img src="/assets/images/success.png">
+                    </div>
+                </div>
+                <div class="modal-footer bg-info">
+                    <div align="center">
+                        <button type="button" class="btn red" onclick="deleteUser(this)" style="width: 100px;" id="btn1">
+                            确定</button>
+                        <button type="button" class="btn green" data-dismiss="modal" style="width: 100px;" id="btn2">
+                            取消</button>
+                        <button type="button" class="btn green" onclick="updateDelete()" style="width: 100px;
+                            display: none;" id="btn3">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tmpShow" class="modal fade modal-margin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 200px;">
+        <div class="modal-dialog" style="width: 400px;">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h4 class="modal-title title1" align="center" id="title1">
+                        <span id="deleteTitle" style="font-weight: bold">请确认是否清理系统缓存
+                        </span>
+                    </h4>
+                    <h4 class="modal-title title2" align="center" id="title2" style="display: none">
+                        <span id="deleteTitle" style="font-weight: bold">清理中...</span>
+                    </h4>
+                    <h4 class="modal-title title3" align="center" id="title3" style="display: none">
+                        <span id="deleteTitle" style="font-weight: bold">清理成功</span>
+                    </h4>
+                </div>
+                <div class="row-fluid" align="center" >
+                    <div id="warn1" class="warn1">
+                        <img src="/assets/images/warning.png">
+                    </div>
+                    <div id="warn2" style="display: none;" class="warn2">
+                        <img src="/assets/images/timg2.gif" style="height: 109px;">
+                    </div>
+                    <div id="warn3" style="display: none;" class="warn3">
+                        <img src="/assets/images/success.png">
+                    </div>
+                </div>
+                <div class="modal-footer bg-info">
+                    <div align="center">
+                        <button type="button" class="btn red btn1" onclick="DeleteTmp()" style="width: 100px;" id="btn1">
+                            确定</button>
+                        <button type="button" class="btn green btn2" data-dismiss="modal" style="width: 100px;" id="btn2">
+                            取消</button>
+                        <button type="button" class="btn green btn3" data-dismiss="modal" style="width: 100px;
+                            display: none;" id="btn3">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+
+            $(function () {
+                tableInformation();
+                formValidation();
+
+
+            });
+
+            function formValidation() {
+                $('#updateForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        psd: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入密码！"
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: "最少输入6位数密码！"
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请再次输入密码！"
+                                },
+                                identical: {
+                                    field: 'psd',
+                                    message: '与您输入的密码不一致!'
+                                }
+                            }
+                        },
+                    }
+                });
+            }
+
+            function updatePassword(obj) {
+                var id = obj.id;
+                $("#uid").val(id);
+                $("#update").modal("show")
+            }
+
+            function sureUpdate() {
+                var form = $("#updateForm")
+                var fv = form.data("formValidation")
+                fv.validate()
+                if (fv.isValid()) {
+                    var index = layer.load(1, {
+                        shade: [0.1, '#fff']
+                    });
+                    $.ajax({
+                        url: "@routes.AdminController.updatePassword()",
+                        type: "put",
+                        data: $("#updateForm").serialize(),
+                        success: function () {
+                            layer.close(index);
+                            $("#update").modal("hide")
+                            cpm("table", "修改成功");
+                        }
+                    })
+                }
+            }
+
+            function openDelete(obj) {
+                var i = obj.id;
+                var name = obj.value;
+                $("#dtask").empty();
+                $("#dtask").append(name);
+                $("#btn1").val(i);
+                deleteBefore();
+                $("#deleteShow").modal("show");
+
+            }
+
+            function openDeleteTmp() {
+                deleteTmpBefore();
+                $("#tmpShow").modal("show");
+            }
+
+            function DeleteTmp() {
+                $.ajax({
+                    url:"@routes.AdminController.deleteTmp()",
+                    type: "delete",
+                    jsonType:"json",
+                    success:function (data) {
+                        if (data == "success") {
+                            deleteTmpAfter();
+                        }
+                    }
+                })
+            }
+
+            function deleteUser(obj) {
+                var id = obj.value;
+                deleting();
+                $.ajax({
+                    url: "http://@host:8003/parametron/project/deleteAll?id=" + id,
+                    type: "get",
+                    dataType: "jsonp",
+                    jsonp: "callback",
+                    jsonpCallback: "showData"
+                });
+                $.ajax({
+                    url: "http://@host:8004/resequencing/project/deleteAll?id=" + id,
+                    type: "get",
+                    dataType: "jsonp",
+                    jsonp: "callback",
+                    jsonpCallback: "showData"
+                });
+                $.ajax({
+                    url: "http://@host:8002/transcriptome/project/deleteAll?id=" + id,
+                    type: "get",
+                    dataType: "jsonp",
+                    jsonp: "callback",
+                    jsonpCallback: "showData"
+                });
+                $.ajax({
+                    url: "http://@host:8001/otu/project/deleteAll?id=" + id,
+                    type: "get",
+                    dataType: "jsonp",
+                    jsonp: "callback",
+                    jsonpCallback: "showData"
+                });
+                $.ajax({
+                    url: "http://@host:8005/anno/admin/delete?userId=" + id,
+                    type: "get",
+                    xhrFields:{
+                        withCredentials: true
+                    },
+                    crossDomain:true
+                });
+                $.ajax({
+                    url: "http://@host:8006/protein/admin/delete?userId=" + id,
+                    type: "get",
+                    xhrFields:{
+                        withCredentials: true
+                    },
+                    crossDomain:true
+                });
+                $.ajax({
+                    url: "http://@host:8007/metabolite/admin/delete?userId=" + id,
+                    type: "get",
+                    xhrFields:{
+                        withCredentials: true
+                    },
+                    crossDomain:true
+                });
+                $.ajax({
+                    url: "/home/deleteUser?id=" + id,
+                    type: "delete",
+                    dataType: "json",
+                    success: function (data1) {
+                        if (data1 == "success") {
+                            deleteAfter();
+                        }
+                    }
+                });
+            }
+
+            function updateDelete() {
+                $("#deleteShow").modal("hide");
+                updateTable();
+            }
+
+
+            function tableInformation() {
+                $.ajax({
+                    url: "@routes.AdminController.getAllUser()",
+                    type: "get",
+                    dataType: "json",
+                    success: function (data) {
+                        $('#table').bootstrapTable({data: data});
+                    }
+                })
+            }
+
+            function updateTable() {
+                $.ajax({
+                    url: "@routes.AdminController.getAllUser()",
+                    type: "get",
+                    dataType: "json",
+                    success: function (data) {
+                        $("#table").bootstrapTable('load', data);
+                    }
+                });
+            }
+
+
+
+    </script>
+
+
+}

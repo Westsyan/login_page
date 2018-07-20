@@ -1,0 +1,168 @@
+@(host:String)(implicit session: Session)
+@index.main("主页") {
+
+    <style>
+            .borders {
+                width: 300px;
+                height: 250px;
+                border: 1px solid #333333;
+                border-radius: 10px 10px 10px 10px;
+                margin: 30px 30px 30px 30px;
+                float: left;
+            }
+
+        .logo{
+            width: 48px;
+            float: left;
+            margin-top: 10px;
+        }
+
+        .title{
+            height:36px;
+            position:relative;
+            word-break:break-all;
+            margin-left: 45px;
+        }
+
+        .name{
+            font-size: 20px;
+            position:absolute;
+            top:50%;
+            left:0;
+            transform:translateY(-50%);
+        }
+
+
+    </style>
+
+
+    <div class="row-fluid">
+
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="portlet box">
+
+
+                    <div class="col-md-10">
+
+
+                        <div style="margin-left: 300px;
+                            float: left" class="col-md-3">
+                            <img src="/assets/images/logo-gansu.png" style="width: 100px;">
+                            <img src="/assets/images/logo-yingfei.gif" style="width: 100px;">
+
+                            <p style="margin-top: 20px"><b>免费客服热线：</b>400-756-2059</p>
+                            <p><b>技术支持邮箱：</b>support@@vgenomics.cn</p>
+                        </div>
+                        <div style="float: left;margin-top: 40px;" class="col-md-5" align="center">
+                            <h1  style="font-size: 35px;"><b>Visual Genomics 生物信息学分析平台</b></h1>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-10" style="margin-left: 200px;">
+
+                        <div class="borders">
+                            <div style="margin-left: 2em;">
+                                <img src="/assets/images/2.png"  class="logo" >
+                                <div class="title">
+                                <h3  class="name"><a href='http://@host:8001/project/home'>微生物多样性分析平台</a></h3>
+                                </div>
+                                <br>
+                                <p style="margin-top: 20px;">平台说明：
+                                </p>
+                                <p>支持MiSeq测序仪，16S、18S、ITS扩增子下机数据分析。包含：原始数据质控、PE reads拼接、OTU聚类和代表序列分类学注释。</p>
+                                <a class="btn btn-primary"   href='http://@host:8001/project/home'>开始分析</a>
+                            </div>
+                        </div>
+
+
+                        <div class="borders">
+                            <div style="margin-left: 2em;">
+                                <img src="/assets/images/1.png"  class="logo" >
+                                <div class="title">
+                                    <h3  class="name"><a href='http://@host:8003/project/home'>有参录组分析平台</a></h3></div>
+                                <br>
+                                <p style="margin-top: 20px;">平台说明：</p>
+                                <p>基于参考基因组序列和基因模型信息的转录组分析流程。包含：原始数据质控、reads比对和表达量计算。</p>
+                                <a class="btn btn-primary" style="margin-top: 20px;"  href='http://@host:8003/project/home'>开始分析</a>
+
+                            </div>
+                        </div>
+
+
+                        <div class="borders">
+                            <div style="margin-left: 2em;">
+                                <img src="/assets/images/4.png"  class="logo" >
+                                <div class="title">
+                                    <h3  class="name"><a href='http://@host:8002/project/home'>无参转录组分析平台</a></h3></div>
+                                <br>
+                                <p style="margin-top: 20px;">平台说明：</p>
+                                <p>无参转录组分析流程。包含：原始数据质控、转录本组装、reads比对组装结果和表达量计算。</p>
+                                <a class="btn btn-primary" style="margin-top: 20px;"  href='http://@host:8002/project/home'>开始分析</a>
+
+                            </div>
+                        </div>
+
+                        <div class="borders">
+                            <div style="margin-left: 2em;">
+                                <img src="/assets/images/3.png"  class="logo" >
+                                <div class="title">
+                                    <h3  class="name"><a href='http://@host:8004/project/home'>重测序分析平台</a></h3></div>
+                                <br>
+                                <p style="margin-top: 20px;">平台说明：</p>
+                                <p>重测序分析流程。包含：原始数据质控、reads比对、SNP和InDel变异检测、SNP和InDel注释、BSA分析。</p>
+                                <a class="btn btn-primary" style="margin-top: 20px;"  href='http://@host:8004/project/home'>开始分析</a>
+
+                            </div>
+                        </div>
+
+                        <div class="borders">
+                            <div style="margin-left: 2em;">
+                                <img src="/assets/images/6.png"  class="logo" >
+                                <div class="title">
+                                    <h3  class="name"><a href='http://@host:8005/'>基因功能注释平台</a></h3></div>
+                                <br>
+                                <p style="margin-top: 20px;">平台说明：</p>
+                                <p>基因功能注释流程。包含：NR注释、GO注释、KEGG注释、eggNOG注释、Swissprot注释。</p>
+                                <a class="btn btn-primary" style="margin-top: 20px;"  href='http://@host:8005/'>开始分析</a>
+
+                            </div>
+                        </div>
+
+                        <div class="borders">
+                        <div style="margin-left: 2em;">
+                            <img src="/assets/images/5.png"  class="logo" >
+                            <div class="title">
+                                <h3  class="name"><a href='http://@host:8006/'>蛋白质组分析平台</a></h3></div>
+                            <br>
+                            <p style="margin-top: 20px;">平台说明：</p>
+                            <p>蛋白质组在线分析平台。包含：数据预处理、差异分析、富集分析、聚类分析、主成分分析等。</p>
+                            <a class="btn btn-primary" style="margin-top: 20px;"  href='http://@host:8006/'>开始分析</a>
+
+                        </div>
+                    </div>
+
+                        <div class="borders">
+                            <div style="margin-left: 2em;">
+                                <img src="/assets/images/7.png"  class="logo" >
+                                <div class="title">
+                                    <h3  class="name"><a href='http://@host:8007/'>代谢组分析平台</a></h3></div>
+                                <br>
+                                <p style="margin-top: 20px;">平台说明：</p>
+                                <p>代谢组在线分析平台。包含：数据预处理、差异分析、代谢物通路分析、聚类分析、PCA、OPLS-DA分析等。</p>
+                                <a class="btn btn-primary" style="margin-top: 20px;"  href='http://@host:8007/'>开始分析</a>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+}
